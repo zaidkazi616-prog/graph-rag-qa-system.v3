@@ -1,5 +1,7 @@
 Multi-Document QA System using Graph RAG (Version 3)
-Click here to use the Live App
+
+Click here to use the Live App:
+https://graph-rag-app-systemv3-6i97wncobkcjumtrahwn9n.streamlit.app/
 
 Overview
 An advanced AI Question-Answering system that allows users to upload any PDF document. It features a Smart Router that detects user intent: it can calculate word counts instantly, generate full document summaries using Llama 3.1, or answer specific questions using the Graph RAG pipeline.
