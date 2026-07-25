@@ -1,0 +1,5 @@
+streamlit
+sentence-transformers
+groq
+pdfplumber
+numpy
