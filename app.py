@@ -6,7 +6,7 @@ import pdfplumber
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Graph RAG QA", layout="centered")
-st.title("Multi-Document QA System (Version 3)")
+st.title("Multi-Document QA System(Version 3)")
 st.caption("Powered by Graph RAG and Llama 3.1 AI")
 
 # --- LOAD MODELS ---
