@@ -2,12 +2,11 @@ import streamlit as st
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from groq import Groq
-import pdfplumber
+import fitz  # This is PyMuPDF, the strongest PDF reader
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Graph RAG QA", layout="centered")
 st.title("Multi-Document QA System (Version 3)")
-# FIX: Using HTML to force the text to stay on one line
 st.markdown("<p style='text-align: center; color: gray; white-space: nowrap;'>Powered by Graph RAG and Llama 3.1 AI</p>", unsafe_allow_html=True)
 
 # --- LOAD MODELS ---
@@ -19,15 +18,24 @@ def load_models():
 # --- HELPER FUNCTIONS ---
 def extract_text_from_pdf(pdf_file):
     try:
+        # Read the file into memory
+        file_bytes = pdf_file.read()
+        
+        # Check if it's actually a PDF
+        if file_bytes[:4] != b'%PDF':
+            st.error("This file is not a real PDF. It might be a Word document or image that was renamed to .pdf. Please export it as a proper PDF file.")
+            return None
+
+        # Open with PyMuPDF
+        doc = fitz.open(stream=file_bytes, filetype="pdf")
         text = ""
-        with pdfplumber.open(pdf_file) as pdf:
-            for page in pdf.pages:
-                extracted = page.extract_text()
-                if extracted:
-                    text += extracted + " "
+        for page in doc:
+            text += page.get_text() + " "
+        doc.close()
+        
         return text
     except Exception as e:
-        st.error(f"Error reading PDF: {e}. The file might be corrupted or scanned as an image.")
+        st.error(f"Error reading PDF: {e}.")
         return None
 
 def process_documents(doc_dict):
